@@ -2,11 +2,19 @@
 
 **Self-hosted, air-gapped enterprise AI chat platform with fully client-side hybrid RAG** — built for Turkish-language document intelligence in environments with zero internet access.
 
-`v2.1.25` · React 18 + TypeScript + Vite · Express · vLLM · IndexedDB (Dexie) · Vitest
+`v2.57.5` · React 18 + TypeScript + Vite · Express · vLLM · IndexedDB (Dexie) · Vitest
+
+<img alt="T3AI Chat — a Python question answered with a syntax-highlighted code block and a markdown table" src=".github/readme/sohbet.png" width="100%">
 
 ## What it does
 
 T3AI Chat is a full-stack chat application deployed on an isolated (air-gapped) network, serving LLMs through vLLM. Users chat with large models, attach documents (PDF/DOCX/XLSX/CSV/MD), and get answers grounded in their own files through a **retrieval-augmented generation (RAG) pipeline that runs entirely in the browser** — document chunks and vectors live in IndexedDB, never on a server.
+
+## In action
+
+**Edit a document from the chat.** Attach a DOCX, say what should change; the model proposes edits, the app applies them client-side and shows the result with every change highlighted — nothing leaves the browser.
+
+<img alt="Document editing panel: an attached DOCX with two applied changes highlighted, and a download button for the edited file" src=".github/readme/belge.png" width="100%">
 
 ## Key features
 
