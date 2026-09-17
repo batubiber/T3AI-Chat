@@ -1,0 +1,1223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Prevent horizontal scroll on entire page */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure the app root isn't constrained by any legacy styles */
+#root {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 0 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 10% 10%;
+
+    --primary: 0 85% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 60% 95%;
+    --secondary-foreground: 0 85% 40%;
+
+    --muted: 0 20% 96%;
+    --muted-foreground: 0 10% 40%;
+
+    --accent: 0 40% 95%;
+    --accent-foreground: 0 10% 10%;
+
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 20% 90%;
+    --input: 0 20% 90%;
+    --ring: 0 85% 50%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 10% 10%;
+    --sidebar-primary: 0 85% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 98%;
+    --sidebar-accent-foreground: 0 10% 10%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 0 85% 50%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(0 85% 50%), hsl(0 75% 55%), hsl(0 65% 60%));
+    --gradient-accent: linear-gradient(135deg, hsl(0 85% 50%), hsl(350 80% 55%), hsl(0 70% 45%));
+    --gradient-bg: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 99%), hsl(0 0% 100%));
+    --gradient-sidebar: hsl(0 0% 100%);
+  }
+
+  .dark {
+    --background: 0 0% 13.3%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 20%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 20%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 0 85% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 70% 35%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 24%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 0 0% 24%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 28%;
+    --input: 0 0% 28%;
+    --ring: 0 85% 50%;
+
+    --sidebar-background: 0 0% 17.3%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 0 85% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 24%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 28%;
+    --sidebar-ring: 0 85% 50%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(0 85% 50%), hsl(0 70% 40%), hsl(0 60% 30%));
+    --gradient-accent: linear-gradient(135deg, hsl(0 85% 50%), hsl(350 80% 45%), hsl(0 70% 35%));
+    --gradient-bg: linear-gradient(180deg, hsl(0 0% 13.3%), hsl(0 0% 15%), hsl(0 0% 13.3%));
+    --gradient-sidebar: hsl(0 0% 17.3%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* iOS Safe Area Support */
+  html {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Safe area utility classes */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* KaTeX styling */
+.katex {
+  font-size: 1.1em;
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem 0;
+}
+
+/* Dark mode KaTeX support */
+.dark .katex {
+  color: hsl(var(--foreground));
+}
+
+.dark .katex .mord,
+.dark .katex .mbin,
+.dark .katex .mrel,
+.dark .katex .mop,
+.dark .katex .mpunct {
+  color: hsl(var(--foreground));
+}
+
+/* Math container styling */
+.prose .katex-display {
+  margin: 1rem 0;
+  background: hsl(var(--muted));
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.prose .katex-html {
+  overflow-x: auto;
+}
+
+/* View Transitions for Theme Toggle */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: theme-fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: theme-fade-in;
+}
+
+@keyframes theme-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes theme-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Brain thinking animation */
+@keyframes brain-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+}
+
+@keyframes brain-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(var(--primary) / 0.3), 0 0 10px hsl(var(--primary) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.5), 0 0 25px hsl(var(--primary) / 0.3);
+  }
+}
+
+@keyframes thinking-dots {
+  0%, 20% {
+    content: ".";
+  }
+  40% {
+    content: "..";
+  }
+  60%, 100% {
+    content: "...";
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-brain-pulse {
+  animation: brain-pulse 1.5s ease-in-out infinite;
+}
+
+.animate-brain-glow {
+  animation: brain-glow 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--primary) / 0.1) 0%,
+    hsl(var(--primary) / 0.3) 50%,
+    hsl(var(--primary) / 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Smooth transitions for all theme-dependent properties */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Enable text selection */
+.select-text,
+.select-text * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+}
+
+/* Disable transitions for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* KaTeX Math Styling */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem;
+  margin: 1rem 0;
+  background: hsl(var(--muted));
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+}
+
+.katex-display > .katex {
+  white-space: normal;
+}
+
+.katex {
+  font-size: 1.1em;
+  color: hsl(var(--foreground));
+}
+
+/* Inline math styling */
+.katex-inline {
+  padding: 0.1em 0.3em;
+  background: hsl(var(--muted) / 0.5);
+  border-radius: 0.25rem;
+}
+
+/* Math display on mobile */
+@media (max-width: 640px) {
+  .katex-display {
+    width: calc(100vw - 4rem);
+    padding: 0.75rem;
+    font-size: 0.9em;
+  }
+  
+  .katex {
+    font-size: 1em;
+  }
+}
+
+/* Sidebar scrollbar - true overlay mode, hover-only visibility */
+[data-sidebar="content"] {
+  /* Use overlay overflow for webkit - scrollbar floats over content */
+  overflow-y: overlay;
+  overflow-x: hidden;
+}
+
+/* Fallback for browsers that don't support overlay */
+@supports not (overflow: overlay) {
+  [data-sidebar="content"] {
+    overflow-y: auto;
+    /* Reserve space to prevent layout shift but keep it invisible */
+    scrollbar-gutter: stable;
+  }
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+[data-sidebar="content"]::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+
+[data-sidebar="content"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-sidebar="content"]::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+}
+
+/* Show scrollbar only on hover */
+[data-sidebar="content"]:hover::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+}
+
+[data-sidebar="content"]:hover::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Firefox */
+@supports (scrollbar-color: auto) {
+  [data-sidebar="content"] {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  [data-sidebar="content"]:hover {
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+}
+
+/* Shake animation for error feedback */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Chat textarea modern scrollbar */
+.chat-textarea {
+  overflow-y: auto;
+}
+
+.chat-textarea::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}
+
+.chat-textarea::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 8px 0;
+}
+
+.chat-textarea::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0);
+  border-radius: 9999px;
+  transition: background 0.3s ease;
+}
+
+.chat-textarea:hover::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.2);
+}
+
+.chat-textarea:hover::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.4);
+}
+
+.chat-textarea:hover::-webkit-scrollbar-thumb:active {
+  background: hsl(var(--primary) / 0.55);
+}
+
+@supports (scrollbar-color: auto) {
+  .chat-textarea {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  .chat-textarea:hover {
+    scrollbar-color: hsl(var(--primary) / 0.2) transparent;
+  }
+}
+
+/* Kod bloğu scroll izolasyonu - streaming sırasında bağımsız scroll */
+.code-block-scroll {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: auto;
+}
+
+/* Streaming sırasında bile scroll etkileşimini koru */
+.code-block-scroll:active,
+.code-block-scroll:focus-within {
+  pointer-events: auto !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Belge düzenleme paneli — render edilmiş DOCX önizlemesi.
+   mammoth çıplak semantik HTML veriyor (<p> <h1> <table> …); okunur tipografi
+   burada veriliyor. Bu bir ÖNİZLEME, WYSIWYG değil: yazı tipi ve sayfa düzeni
+   Word'deki gibi değil, yapı ve içerik doğru.
+   --------------------------------------------------------------------------- */
+.t3ai-docx-onizleme {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", ui-serif, serif;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: hsl(var(--foreground));
+  /* Dar panelde uzun URL/kelime taşıyordu */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+/* Okunabilir ölçü YALNIZ düz metin belgesinde: panel genişletilince satırlar
+   okunamayacak kadar uzuyordu. Tablo/slayt önizlemesinde uygulanmıyor —
+   orada içerik tam genişliği hak ediyor, yoksa boşu boşuna yatay kaydırma
+   çıkıyor (ölçüldü: 62ch = 465px, panel 900px olsa tablo yine kayardı). */
+.t3ai-docx-onizleme.t3ai-metin-olcu {
+  max-width: 62ch;
+  margin: 0 auto;
+}
+
+.t3ai-docx-onizleme p { margin: 0 0 0.8em; }
+.t3ai-docx-onizleme > :first-child { margin-top: 0; }
+.t3ai-docx-onizleme > :last-child { margin-bottom: 0; }
+
+/* Başlık kademesi — mammoth h1..h6 üretebiliyor, hepsine karşılık ver */
+.t3ai-docx-onizleme h1,
+.t3ai-docx-onizleme h2,
+.t3ai-docx-onizleme h3,
+.t3ai-docx-onizleme h4,
+.t3ai-docx-onizleme h5,
+.t3ai-docx-onizleme h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 1.5em 0 0.45em;
+  color: hsl(var(--foreground));
+}
+.t3ai-docx-onizleme h1 { font-size: 1.375rem; letter-spacing: -0.012em; }
+.t3ai-docx-onizleme h2 { font-size: 1.15rem; letter-spacing: -0.008em; }
+.t3ai-docx-onizleme h3 { font-size: 1.02rem; }
+.t3ai-docx-onizleme h4,
+.t3ai-docx-onizleme h5,
+.t3ai-docx-onizleme h6 {
+  font-size: 0.9375rem;
+  /* Alt kademeler artık boyutla değil, biçimle ayrılıyor */
+  font-family: system-ui, sans-serif;
+  letter-spacing: 0.01em;
+}
+/* Word'ün "Title"/"Başlık" biçemi — belgenin adı, bölüm başlığı değil */
+.t3ai-docx-onizleme h1.t3ai-baslik {
+  font-size: 1.55rem;
+  margin-top: 0;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid hsl(var(--border));
+}
+.t3ai-docx-onizleme p.t3ai-altbaslik {
+  margin-top: -0.5em;
+  font-size: 1rem;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+
+/* ── LİSTELER ──────────────────────────────────────────────────────────────
+   Madde imleri GÖRÜNMÜYORDU. Sebebi mammoth değil (o <ul>/<ol>/<li>'yi doğru
+   üretiyor, ölçüldü): Tailwind preflight'ı `ol,ul,menu{list-style:none}` ile
+   işaretleri kaldırıyor ve burada geri verilmemişti. */
+.t3ai-docx-onizleme ul,
+.t3ai-docx-onizleme ol {
+  margin: 0 0 0.8em;
+  padding-left: 1.35em;
+}
+.t3ai-docx-onizleme ul { list-style: disc outside; }
+.t3ai-docx-onizleme ol { list-style: decimal outside; }
+/* İç içe seviyeler ayrışsın — Word'deki gibi işaret değişiyor */
+.t3ai-docx-onizleme ul ul { list-style-type: circle; }
+.t3ai-docx-onizleme ul ul ul { list-style-type: square; }
+.t3ai-docx-onizleme ol ol { list-style-type: lower-alpha; }
+.t3ai-docx-onizleme ol ol ol { list-style-type: lower-roman; }
+.t3ai-docx-onizleme li { margin-bottom: 0.25em; }
+.t3ai-docx-onizleme li::marker { color: hsl(var(--muted-foreground)); }
+/* İç içe liste, ebeveyn maddesine yapışmasın ama fazla da açılmasın */
+.t3ai-docx-onizleme li > ul,
+.t3ai-docx-onizleme li > ol { margin: 0.25em 0 0; }
+.t3ai-docx-onizleme li > p { margin: 0 0 0.25em; }
+
+/* ── ALINTI / KOD ───────────────────────────────────────────────────────── */
+.t3ai-docx-onizleme blockquote {
+  margin: 0 0 0.8em;
+  padding: 0.1em 0 0.1em 0.9em;
+  border-left: 2px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+.t3ai-docx-onizleme blockquote.t3ai-guclu {
+  border-left-color: hsl(var(--primary) / 0.5);
+  color: hsl(var(--foreground));
+}
+.t3ai-docx-onizleme blockquote p:last-child { margin-bottom: 0; }
+.t3ai-docx-onizleme code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: hsl(var(--muted) / 0.6);
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+}
+.t3ai-docx-onizleme p.t3ai-resim-yazisi {
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+}
+
+/* ── TABLO ─────────────────────────────────────────────────────────────────
+   mammoth <th> ÜRETMİYOR (ölçüldü: 0 tane) — Word'de başlık satırı ayrı bir
+   etiket değil, biçim. Bu yüzden İLK SATIR başlık gibi gösteriliyor; Word
+   belgelerinin ezici çoğunluğunda öyle. Değilse yalnız hafif vurgulu görünür,
+   bilgi kaybı olmaz.
+   .t3ai-xlsx-tablo hariç: onun gerçek <th>'leri var, kendi kuralları geçerli. */
+.t3ai-docx-onizleme table:not(.t3ai-xlsx-tablo) {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0 0 1em;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+.t3ai-docx-onizleme table:not(.t3ai-xlsx-tablo) th,
+.t3ai-docx-onizleme table:not(.t3ai-xlsx-tablo) td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.4em 0.55em;
+  vertical-align: top;
+  text-align: left;
+}
+.t3ai-docx-onizleme table:not(.t3ai-xlsx-tablo) tr:first-child td,
+.t3ai-docx-onizleme table:not(.t3ai-xlsx-tablo) th {
+  background: hsl(var(--muted) / 0.45);
+  font-weight: 600;
+}
+.t3ai-docx-onizleme td p:last-child,
+.t3ai-docx-onizleme th p:last-child { margin-bottom: 0; }
+
+.t3ai-docx-onizleme img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 0.2em 0 0.8em;
+}
+.t3ai-docx-onizleme hr {
+  border: 0;
+  border-top: 1px solid hsl(var(--border));
+  margin: 1.4em 0;
+}
+
+/* Modelin değiştirdiği metin — belgede nerede olduğu görünsün */
+.t3ai-docx-onizleme mark.t3ai-degisti {
+  background: hsl(142 70% 45% / 0.18);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0.05em 0.15em;
+  box-shadow: inset 0 -1px 0 hsl(142 70% 45% / 0.5);
+}
+
+/* Slayt önizlemesi — PPTX'te mammoth yok, slaytlar pptxPreview'de üretiliyor */
+.t3ai-docx-onizleme .t3ai-slayt {
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.9rem;
+}
+.t3ai-docx-onizleme .t3ai-slayt h3 {
+  font-family: system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  margin: 0 0 0.6em;
+}
+.t3ai-docx-onizleme .t3ai-slayt p { margin: 0 0 0.5em; }
+.t3ai-docx-onizleme .t3ai-slayt p:last-child { margin-bottom: 0; }
+
+/* Excel önizlemesi — Excel'i taklit etmez (biçim/renk/kolon genişliği yok),
+   değişikliği tablo bağlamında gösterir. Kolon/satır başlıkları kullanıcı
+   hücreyi Excel'de bulabilsin diye. */
+.t3ai-docx-onizleme .t3ai-xlsx-sayfa {
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.9rem;
+}
+.t3ai-docx-onizleme .t3ai-xlsx-sayfa h3 {
+  font-family: system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+  margin: 0 0 0.6em;
+}
+/* Geniş tablo panelin dışına taşmasın, kendi içinde kaysın */
+.t3ai-docx-onizleme .t3ai-xlsx-kaydir {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.t3ai-docx-onizleme .t3ai-xlsx-tablo {
+  border-collapse: collapse;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+}
+.t3ai-docx-onizleme .t3ai-xlsx-tablo th,
+.t3ai-docx-onizleme .t3ai-xlsx-tablo td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.t3ai-docx-onizleme .t3ai-xlsx-tablo th {
+  background: hsl(var(--muted) / 0.5);
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+  font-size: 0.7rem;
+  text-align: center;
+}
+/* Satır başlığı yatay kaydırmada sabit kalıyor; arka plan YARI SAYDAM olamaz,
+   yoksa kayan hücreler altından görünür.
+   DİKKAT — seçicideki `th` şart: üstteki `... .t3ai-xlsx-tablo th` kuralı
+   (0,2,1) sınıf-sınıf yazılmış bir kuralı (0,2,0) özgüllükle EZİYOR. Tarayıcıda
+   ölçülünce arka plan hâlâ rgba(...,0.5) çıkıyordu. */
+.t3ai-docx-onizleme .t3ai-xlsx-tablo th.t3ai-xlsx-kose,
+.t3ai-docx-onizleme .t3ai-xlsx-tablo th.t3ai-xlsx-satir {
+  position: sticky;
+  left: 0;
+  background: hsl(var(--background));
+  box-shadow: 1px 0 0 hsl(var(--border));
+  z-index: 1;
+}
+.t3ai-docx-onizleme .t3ai-xlsx-formul {
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+.t3ai-docx-onizleme .t3ai-xlsx-not {
+  margin: 0.5rem 0 0;
+  font-size: 0.7rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Piksel-ızgara yükleme göstergesi (LoadingState.tsx).
+   Buradalar, tailwind.config'de değil: bileşen satır-içi `animation` ile ms
+   cinsinden gecikme veriyor, Tailwind ise yalnız utility olarak kullanılan
+   keyframe'leri çıktıya koyuyor — config'de tanımlansa purge edilirdi.
+   Azaltılmış harekette yukarıdaki genel kural bunları durduruyor; hücreler
+   sönük temel opaklığında kalıyor. */
+@keyframes pixel-on {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer-text {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ARTIFACT PANELİ — "düzelti sayfası"
+   ─────────────────────────────────────────────────────────────────────────
+   Bu panel bir gösterge paneli değil: kullanıcı kendi belgesine yapılan
+   makine düzeltmelerini onaylıyor. O yüzden dili bir düzelti sayfasından
+   alıyor. Üç tipografik ses ayrıştırıldı:
+
+     chrome  (sistem sans)  — etiket, sayaç, eylem. Arayüzün sesi.
+     belge   (Georgia)      — diff'teki ESKİ/YENİ metin. Bu metin belgenin
+                              kendisi; arayüz fontuyla dizilince kullanıcının
+                              cümlesi arayüz öğesi gibi okunuyordu.
+     koordinat (mono)       — "Ocak!B2", "Slayt 3", "Paragraf 47". Bunlar
+                              adres, cümle değil; mono + tabular figürle
+                              alt alta tarandığında hizalı çıkıyor.
+
+   Ölçek burada tanımlı, JSX'e serpiştirilmiş text-[11px]/text-xs/text-sm
+   karışımı yerine. Ritim 4px tabanında.
+
+   Webfont EKLENMEDİ: bu uygulama internetsiz cluster'a kuruluyor, dışarıdan
+   font çekilemiyor ve repoya ikili dosya vendorlamak ayrı bir karar. Karakter
+   sistem yığınlarının kontrastından geliyor.
+   ══════════════════════════════════════════════════════════════════════════ */
+.t3ai-artifact {
+  --a-micro: 0.66rem;    /* 10.5px — damga, format etiketi */
+  --a-label: 0.72rem;    /* 11.5px — ikincil satır, gerekçe */
+  --a-body: 0.82rem;     /* 13px  — belge metni, gövde */
+  --a-title: 0.85rem;    /* 13.5px — dosya adı */
+
+  --a-serif: Georgia, "Iowan Old Style", "Palatino Linotype", ui-serif, serif;
+  --a-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  /* Düzelti renkleri koyu zemin için kalibre edildi; açık temada dark: yok,
+     doğrudan ışık/koyu çiftleri aşağıda. */
+  /* 62% iken ölçülen kontrast 4.42 — AA eşiği 4.5'in ALTINDA kalıyordu.
+     Silinen metin üstü çizili olsa da kullanıcının kendi cümlesi; okunmalı. */
+  --a-sil: 0 78% 70%;      /* silinen */
+  --a-ekle: 152 58% 46%;   /* eklenen */
+  --a-uyari: 38 88% 55%;   /* uygulanamayan */
+}
+:root:not(.dark) .t3ai-artifact {
+  /* Açık temada ölçülen kontrast (zemin #fafafa): silinen 5.6, eklenen 4.5.
+     Eklenen sınırdaydı ve üstüne %10 renkli zemin biniyor — koyulaştırıldı. */
+  --a-sil: 0 74% 42%;
+  --a-ekle: 152 64% 26%;
+  --a-uyari: 30 92% 34%;
+}
+
+/* ── koordinat damgası ─────────────────────────────────────────────────── */
+.t3ai-artifact .a-koordinat {
+  font-family: var(--a-mono);
+  font-size: var(--a-micro);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+}
+
+/* ── düzelti kartı: sol ray durumu KODLAR ──────────────────────────────────
+   Önceden durum yalnız kenar rengi + opaklıkla anlatılıyordu; bir kolon
+   kart alt alta gelince hangisinin uygulandığı taranamıyordu. Ray, gözün
+   tek dikey çizgide sayabileceği bir sinyal. */
+.t3ai-artifact .a-kart {
+  position: relative;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem 0.75rem 0.875rem;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}
+.t3ai-artifact .a-kart::before {
+  content: "";
+  position: absolute;
+  inset: 0.375rem auto 0.375rem 0;
+  width: 2px;
+  border-radius: 2px;
+  background: hsl(var(--border));
+  transition:
+    background-color 180ms ease,
+    inset 180ms ease;
+}
+.t3ai-artifact .a-kart[data-durum="uygulanacak"] {
+  border-color: hsl(var(--a-ekle) / 0.35);
+  background: hsl(var(--a-ekle) / 0.045);
+}
+.t3ai-artifact .a-kart[data-durum="uygulanacak"]::before {
+  background: hsl(var(--a-ekle));
+  inset: 0.375rem auto 0.375rem 0;
+}
+.t3ai-artifact .a-kart[data-durum="cikarildi"] {
+  opacity: 0.6;
+}
+.t3ai-artifact .a-kart[data-durum="cikarildi"]::before {
+  /* ray kısalıyor: "çıkarıldı" hareketle de anlatılıyor */
+  inset: 45% auto 45% 0;
+}
+.t3ai-artifact .a-kart[data-durum="reddedildi"] {
+  border-style: dashed;
+}
+.t3ai-artifact .a-kart[data-durum="reddedildi"]::before {
+  background: hsl(var(--a-uyari) / 0.7);
+}
+
+/* ── diff: kod diff'i değil, düzelti işareti ───────────────────────────────
+   Eskiden eklenen metin dolu yeşil bloktu ve kod incelemesi gibi duruyordu.
+   Silinen üstü çizili + soluk, eklenen alttan vurgulu: kalem izine yakın. */
+.t3ai-artifact .a-diff {
+  font-family: var(--a-serif);
+  font-size: var(--a-body);
+  line-height: 1.55;
+}
+.t3ai-artifact .a-diff-satir {
+  display: grid;
+  grid-template-columns: 0.875rem 1fr;
+  gap: 0.375rem;
+  align-items: baseline;
+}
+.t3ai-artifact .a-gutter {
+  font-family: var(--a-mono);
+  font-size: var(--a-micro);
+  line-height: 1.9;
+  user-select: none;
+  color: hsl(var(--muted-foreground) / 0.7);
+}
+.t3ai-artifact .a-sil {
+  color: hsl(var(--a-sil));
+  text-decoration: line-through;
+  text-decoration-color: hsl(var(--a-sil) / 0.75);
+  text-decoration-thickness: 1px;
+}
+.t3ai-artifact .a-ekle {
+  color: hsl(var(--a-ekle));
+  background: hsl(var(--a-ekle) / 0.1);
+  box-shadow: inset 0 -1px 0 hsl(var(--a-ekle) / 0.55);
+  border-radius: 1px;
+  padding: 0 0.5px;
+}
+/* Değişmeyen kısım geri çekiliyor: göz farka gitsin */
+.t3ai-artifact .a-diff-satir[data-yon="eski"] .a-nots,
+.t3ai-artifact .a-diff-satir[data-yon="yeni"] .a-nots {
+  color: hsl(var(--muted-foreground));
+}
+
+/* ── kabul anahtarı ────────────────────────────────────────────────────────
+   Tıklamada hafif bir bas-bırak: dokunuşun karşılığı olsun. */
+.t3ai-artifact .a-onay {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 120ms cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+.t3ai-artifact .a-onay:active {
+  transform: scale(0.88);
+}
+
+/* ── DIFF TABLOSU (XLSX) ───────────────────────────────────────────────────
+   Hücre düzenlemeleri düz metin diff'i olarak gösteriliyordu: her hücre için
+   iki satır (eski/yeni). Tablo verisinde bu kötü okunuyor — on hücrelik bir
+   düzeltme yirmi satır oluyor ve adresler hizasız kalıyor.
+   Izgara: adres | eski | yeni. Adresler mono ve alt alta hizalı; göz kolonu
+   tarayabiliyor. DOCX/PPTX düz metin diff'inde KALIYOR, orada paragraflar uzun
+   ve tabloya sığmıyor. */
+.t3ai-artifact .a-diff-tablo {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--a-label);
+}
+.t3ai-artifact .a-diff-tablo th {
+  text-align: left;
+  font-weight: 500;
+  font-size: var(--a-micro);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: hsl(var(--muted-foreground));
+  padding: 0 0.4rem 0.3rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+.t3ai-artifact .a-diff-tablo td {
+  padding: 0.3rem 0.4rem;
+  border-bottom: 1px solid hsl(var(--border) / 0.6);
+  vertical-align: top;
+}
+.t3ai-artifact .a-diff-tablo tr:last-child td { border-bottom: 0; }
+/* Onay kolonu ve adres daralmasın; değer kolonları paylaşsın */
+.t3ai-artifact .a-diff-tablo .a-kol-onay { width: 1.75rem; padding-left: 0; }
+.t3ai-artifact .a-diff-tablo .a-kol-adres { width: 1%; white-space: nowrap; }
+.t3ai-artifact .a-diff-tablo .a-hucre-deger {
+  font-family: var(--a-serif);
+  font-size: var(--a-body);
+  overflow-wrap: anywhere;
+}
+/* Çıkarılan satır: renkten bağımsız da anlaşılsın diye soluk + üstü çizili değil
+   (üstü çizili "silinen değer" ile karışırdı) */
+.t3ai-artifact .a-diff-tablo tr[data-durum='cikarildi'] { opacity: 0.5; }
+.t3ai-artifact .a-diff-tablo tr[data-durum='reddedildi'] td { color: hsl(var(--muted-foreground)); }
+
+/* Akıl yürütme izi — satırlar sırayla belirsin (beautifului.dev deseni).
+   shimmer-text zaten LoadingState için tanımlı, tekrar edilmiyor. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Sohbetteki markdown tabloları ─────────────────────────────────────────
+   Eskisi her hücreye kenarlık çizip başlığa dolu zemin veriyordu; elektronik
+   tablo ekran görüntüsü gibi duruyordu. Kenarlık yerine satır arası ince çizgi
+   ve açık dikey boşluk: okuma ritmi tablonun kendisinden geliyor.
+   Hizalama bileşende nth-child ile veriliyor (kolonun tamamına bakmak
+   gerekiyor), burada yalnız görünüm var. */
+.t3ai-md-tablo {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.8125rem;
+}
+.t3ai-md-tablo th {
+  padding: 0 0.75rem 0.6rem;
+  text-align: left;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  white-space: nowrap;
+  border-bottom: 1px solid hsl(var(--border));
+}
+.t3ai-md-tablo td {
+  padding: 0.7rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.5;
+  color: hsl(var(--foreground) / 0.9);
+  /* Satır ayracı hücre kenarlığından DAHA SOLUK: göz satırı takip etsin ama
+     ızgara hissi olmasın */
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+}
+.t3ai-md-tablo tbody tr:last-child td { border-bottom: 0; }
+/* İlk kolon biraz nefes alsın, metin blokla hizalansın */
+.t3ai-md-tablo th:first-child,
+.t3ai-md-tablo td:first-child { padding-left: 0; }
+.t3ai-md-tablo th:last-child,
+.t3ai-md-tablo td:last-child { padding-right: 0; }
+
+/* ---------------------------------------------------------------------------
+   "Yenilikler" rozeti.
+
+   HOVER: köşeden yükselen daire rozeti dolduruyor ve renkler ters dönüyor.
+   Dönen konik çerçeve denendi ve BU ÖLÇEKTE kötü durdu: 1 piksellik halkada
+   üç doygun renk döndürünce tırtıklanıyor ve renk sınırı köşede zıplıyor.
+   Burada ince çizgi yok, büyük bir şeklin hareketi var — küçültünce dağılmıyor.
+
+   OKUNMAMIŞ: aynı dairenin yumuşak, düşük opaklıkta bir dalgası kendiliğinden
+   yükselip iniyor. Metin rengi DEĞİŞMİYOR: 10 piksellik yazıyı saniyede bir
+   ters çevirmek okunurluğu bozardı. Hover'daki tam dolum ile aynı görsel dil,
+   yalnız daha sakin hâli.
+--------------------------------------------------------------------------- */
+.yenilik-rozet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 100%;
+  transform: translate(150%, 150%) scale(2.5);
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  background: hsl(var(--foreground));
+}
+.yenilik-rozet:hover::before { transform: translate(0%, 0%) scale(2.5); }
+
+/* Okunmamış dalga: ayrı bir katman, hover katmanının altında kalıyor. */
+.yenilik-dalga::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  border-radius: 100%;
+  background: hsl(var(--primary) / 0.28);
+  animation: yenilik-dalga 4.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  pointer-events: none;
+}
+@keyframes yenilik-dalga {
+  0%, 100% { transform: translate(120%, 120%) scale(2.2); }
+  50%      { transform: translate(0%, 0%) scale(2.2); }
+}
+
+/* Hareket duyarlılığı: dalga durur, sabit bir renk ipucu kalır. */
+@media (prefers-reduced-motion: reduce) {
+  .yenilik-dalga::after { animation: none; transform: translate(0%, 0%) scale(2.2); opacity: .5; }
+  .yenilik-rozet::before { transition: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Efor kaydırıcısı — dolan barın içinde soldan sağa akan parçacıklar.
+
+   Parçacıklar `left` ile hareket ediyor, `transform: translateX(%)` ile değil:
+   yüzde çeviri ÖĞENİN KENDİ genişliğine göre hesaplanıyor ve parçacık 3
+   piksel — %100 çeviri 3 piksel eder, işe yaramaz. `left: 100%` ise KAPSAYICI
+   genişliğine göre, yani dolu alanın sonuna gider. Dolu alan kullanıcı
+   kaydırdıkça değiştiği için mesafeyi sabit yazamıyoruz.
+
+   Kapsayıcıda overflow:hidden var; parçacık dolu alanın dışına taşmıyor.
+--------------------------------------------------------------------------- */
+@keyframes efor-akis {
+  0%   { left: -6px;              opacity: 0; }
+  12%  {                          opacity: 0.95; }
+  70%  {                          opacity: 0.65; }
+  100% { left: calc(100% + 6px);  opacity: 0; }
+}
+
+.efor-parcacik {
+  position: absolute;
+  border-radius: 9999px;
+  background: #fff;
+  opacity: 0;
+  animation-name: efor-akis;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Hareket duyarlılığı: parçacıklar tamamen durur, dolu bar kalır. */
+@media (prefers-reduced-motion: reduce) {
+  .efor-parcacik { animation: none; opacity: 0; }
+}
+
+/* ---------------------------------------------------------------------------
+   Işıklı kart — imlecin altında yumuşak bir ışık lekesi.
+
+   Renk TEMADAN geliyor. Örnek aldığımız kaynak koyu tema için yazılmış
+   (beyaz ışık, koyu zemin); bizim açık temadaki beyaz kartta beyaz ışık hiç
+   görünmezdi. Açık temada markanın kırmızısı düşük opaklıkta, koyu temada
+   beyaz.
+
+   IŞIK KATMANI İÇERİĞİN ALTINDA. Kaynakta `::before` metnin üstünde duruyor;
+   koyu kartta %5 beyazla fark edilmiyor ama bizim açık kartta kırmızı tül
+   yazının üstüne binip onu pembeleştirirdi. Bu yüzden ışık `z-index: 0`,
+   çocuklar `z-index: 1`.
+--------------------------------------------------------------------------- */
+.isikli-kart {
+  position: relative;
+  overflow: hidden;
+  --isik-x: 50%;
+  --isik-y: 50%;
+  --isik-rengi: hsl(var(--primary) / 0.10);
+}
+.isikli-kart::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--isik-x) var(--isik-y),
+    var(--isik-rengi),
+    transparent 75%
+  );
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+.isikli-kart:hover::before,
+.isikli-kart:focus-within::before {
+  opacity: 1;
+}
+.isikli-kart > * {
+  position: relative;
+  z-index: 1;
+}
+
+.dark .isikli-kart {
+  --isik-rengi: hsl(0 0% 100% / 0.07);
+}
+
+/* Hareket duyarlılığı: ışık yerinde kalır, yumuşak geçiş kalkar. */
+@media (prefers-reduced-motion: reduce) {
+  .isikli-kart::before { transition: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   İkon animasyonları — düğmeye sınıf, ikona değil.
+
+   Kaynak, kullanıcının beğendiği "animated lucide" dosyasıydı. O dosya CSS'i
+   HER SVG'NİN İÇİNE gömüyor; SVG `<style>` bloğu kapsamlı değil, tanımlar
+   belgenin tamamına sızıyor. Yedi düğme için yedi kopya demek olurdu ve
+   hepsi birbirinin üstüne yazardı. Kitaplık bu yüzden bir kez burada.
+
+   İkonun path'lerine sınıf YAZILMIYOR: kademeli gecikme `nth-child` ile
+   veriliyor. Böylece `lucide-react` bileşenleri olduğu gibi kalıyor —
+   ham SVG'ye geçseydik ikon kütüphanesinin güncellemeleri elle taşınırdı.
+
+   Seçiciler DOĞRUDAN ÇOCUK değil: bazı düğmelerde ikon bir sarmalayıcı
+   <div> içinde duruyor (kopyala/onay çapraz geçişi böyle kurulu) ve
+   `> svg` orada tutmuyordu.
+
+   Efektler ikona ÖZEL, hepsine aynı şey uygulanmıyor: yenilemenin dönmesi,
+   geri sarmanın ters dönmesi ne yaptığını anlatıyor. Aynı efekti her yere
+   vermek o bilgiyi harcardı.
+--------------------------------------------------------------------------- */
+.canli-ikon svg, .sidebar-motion button svg { overflow: visible; }
+.canli-ikon svg > *, .sidebar-motion button svg > * { --canli-gecikme: 0ms; }
+.canli-ikon svg > *:nth-child(2), .sidebar-motion button svg > *:nth-child(2) { --canli-gecikme: 70ms; }
+.canli-ikon svg > *:nth-child(3), .sidebar-motion button svg > *:nth-child(3) { --canli-gecikme: 140ms; }
+.canli-ikon svg > *:nth-child(4), .sidebar-motion button svg > *:nth-child(4) { --canli-gecikme: 210ms; }
+
+/* Kademeli büyüme — parçalı ikonlarda (katman) sırayla yerine oturuyor. */
+.canli-pop svg > *, .sidebar-motion button svg > * { transform-origin: center; }
+.canli-pop:hover svg > *,
+.sidebar-motion button:is(:hover, :focus-visible) svg:not(.animate-spin) > * {
+  animation: canli-pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--canli-gecikme) both;
+}
+@keyframes canli-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Çizim — dallanmada dalın uzadığı hissi. */
+.canli-ciz svg > * { stroke-dasharray: 60; }
+.canli-ciz:hover svg > * {
+  animation: canli-ciz 600ms ease var(--canli-gecikme) both;
+}
+@keyframes canli-ciz {
+  0%   { stroke-dashoffset: 60; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* Dönme — yalnız dönen ikonlarda anlamlı. Geri sarma TERS dönüyor. */
+.canli-don:hover svg { animation: canli-don 700ms cubic-bezier(0.4, 0, 0.2, 1) both; }
+@keyframes canli-don { to { transform: rotate(360deg); } }
+.canli-don-geri:hover svg { animation: canli-don-geri 600ms cubic-bezier(0.4, 0, 0.2, 1) both; }
+@keyframes canli-don-geri { to { transform: rotate(-360deg); } }
+
+/* İtme — yön belirten ikonlar. Yön `--canli-y` ile veriliyor. */
+.canli-it svg { transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.canli-it:hover svg { transform: translateY(var(--canli-y, -2px)); }
+
+/* Kayma — kopyalamada ÖN dikdörtgen kayıyor, "kopya çıkarma" hissi.
+   Yalnız ilk çocuk oynuyor; ikisi birden kaysa ikon sadece yer değiştirirdi. */
+.canli-kaydir svg > *:first-child {
+  transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.canli-kaydir:hover svg > *:first-child { transform: translate(1.5px, 1.5px); }
+
+/* Hareket duyarlılığı: efektler kapanır, düğmeler çalışmaya devam eder. */
+@media (prefers-reduced-motion: reduce) {
+  .canli-pop:hover svg > *,
+  .canli-ciz:hover svg > *,
+  .canli-don:hover svg,
+  .canli-don-geri:hover svg { animation: none; }
+  .canli-it svg,
+  .canli-kaydir svg > *:first-child { transition: none; }
+}
+
+/* Çalışma alanı hareketi: kısa, ortak bir eğri; kapanış sırasında DOM korunur. */
+.workspace-pane {
+  transition: opacity 220ms cubic-bezier(.22, 1, .36, 1), transform 260ms cubic-bezier(.22, 1, .36, 1);
+  opacity: 1;
+  transform: translateX(0);
+}
+.workspace-pane[data-visible="false"] { opacity: 0; transform: translateX(10px); pointer-events: none; }
+.workspace-pane[hidden] { display: none !important; }
+.workspace-width {
+  transition: width 260ms cubic-bezier(.22, 1, .36, 1), margin 260ms cubic-bezier(.22, 1, .36, 1), opacity 220ms cubic-bezier(.22, 1, .36, 1), transform 260ms cubic-bezier(.22, 1, .36, 1);
+}
+.workspace-icon-button, .sidebar-motion button {
+  transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease, transform 180ms cubic-bezier(.22, 1, .36, 1);
+}
+@media (hover: hover) {
+  .workspace-icon-button:hover, .sidebar-motion button:enabled:hover { transform: translateY(-1px); }
+}
+.workspace-icon-button:active, .sidebar-motion button:enabled:active { transform: translateY(0) scale(.95); }
+.workspace-icon-button:focus-visible, .sidebar-motion button:focus-visible { box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring) / .65); }
+.canli-pop:focus-visible svg > * { animation: canli-pop 500ms cubic-bezier(.34, 1.56, .64, 1) var(--canli-gecikme) both; }
+.workspace-resizable:not([data-resizing="true"]) > [data-panel] { transition: flex-grow 260ms cubic-bezier(.22, 1, .36, 1); }
+.workspace-popup-motion[data-state="open"],
+.workspace-popup-motion[data-state="delayed-open"],
+.workspace-popup-motion[data-state="instant-open"] { animation-duration: 220ms; animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+.workspace-popup-motion[data-state="closed"] { animation-duration: 160ms; animation-timing-function: cubic-bezier(.4, 0, 1, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .workspace-pane, .workspace-width, .workspace-icon-button, .sidebar-motion button, .sidebar-motion button svg,
+  .workspace-resizable > [data-panel] { transition: none !important; }
+  .workspace-icon-button:hover, .workspace-icon-button:active,
+  .sidebar-motion button:enabled:hover, .sidebar-motion button:enabled:active { transform: none; }
+  .workspace-pane[data-visible="false"] { transform: none; }
+  .workspace-popup-motion { animation: none !important; }
+  .canli-pop:focus-visible svg > *, .sidebar-motion button:is(:hover, :focus-visible) svg:not(.animate-spin) > * { animation: none; }
+}
+.chat-workspace[data-compact="true"] .workspace-resizable { position: relative; }
+.chat-workspace[data-compact="true"] .workspace-resizable > [data-panel] { position: absolute; inset: 0; width: 100%; }
+.chat-workspace[data-compact="true"] [data-panel-id="document"] { pointer-events: none; }
+.chat-workspace[data-compact="true"] [data-panel-id="document"] > [data-visible="true"] { pointer-events: auto; }
+.chat-workspace[data-compact="true"] [data-panel-resize-handle-id] { display: none; }

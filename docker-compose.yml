@@ -1,0 +1,125 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        VITE_API_URL: /api
+    ports:
+      - "80:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - t3ai-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - VLLM_ENDPOINT=${VLLM_ENDPOINT:-http://vllm-a.example:8000/v1/chat/completions}
+      - VLLM_API_KEY=${VLLM_API_KEY:-token-yok}
+      - VITE_MODEL_NAME=${VITE_MODEL_NAME:-glm-5.2}
+      - VITE_DEFAULT_TEMPERATURE=${VITE_DEFAULT_TEMPERATURE:-0.6}
+      - VITE_DEFAULT_MAX_TOKENS=${VITE_DEFAULT_MAX_TOKENS:-4096}
+      - MAX_OUTPUT_TOKENS_CAP=${MAX_OUTPUT_TOKENS_CAP:-4096}
+      - MODEL_MAX_CONTEXT_LENGTH=${MODEL_MAX_CONTEXT_LENGTH:-32768}
+      - VITE_DEFAULT_TOP_P=${VITE_DEFAULT_TOP_P:-0.95}
+      - VITE_DEFAULT_TOP_K=${VITE_DEFAULT_TOP_K:-20}
+      - VITE_DEFAULT_MIN_P=${VITE_DEFAULT_MIN_P:-0}
+      - VITE_SYSTEM_PROMPT_BASE=${VITE_SYSTEM_PROMPT_BASE:-You are a helpful assistant.}
+      # Özetleme/başlık Qwen3.5-VL (vllm-b.example:8000)
+      - SUMMARY_VLLM_ENDPOINT=${SUMMARY_VLLM_ENDPOINT:-http://vllm-b.example:8000/v1/chat/completions}
+      - SUMMARY_MODEL_NAME=${SUMMARY_MODEL_NAME:-gemma-4-31b}
+      # Embedding (RAG) — bge-m3 @ vllm-b.example:8002
+      - EMBEDDING_ENDPOINT=${EMBEDDING_ENDPOINT:-http://vllm-b.example:8002/v1/embeddings}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-bge-m3}
+      - EMBEDDING_DIMENSION=${EMBEDDING_DIMENSION:-1024}
+      # OCR (taranmış PDF / gömülü görsel) — Unlimited-OCR @ vllm-b.example:8003
+      - OCR_ENDPOINT=${OCR_ENDPOINT:-http://vllm-b.example:8003/v1/chat/completions}
+      - OCR_MODEL=${OCR_MODEL:-baidu/Unlimited-OCR}
+      # Model metrics panel kaynakları (backend /api/model-metrics)
+      - METRICS_GLM_URL=${METRICS_GLM_URL:-http://vllm-a.example:8000/metrics}
+      - METRICS_GEMMA_URL=${METRICS_GEMMA_URL:-http://vllm-b.example:8000/metrics}
+    restart: unless-stopped
+    networks:
+      - t3ai-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  t3ai-network:
+    driver: bridge
+
+
+
+
+
+
+# services:
+#   frontend:
+#     image: t3ai-chat-frontend:latest
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - backend
+#     networks:
+#       - t3ai-network
+#   backend:
+#     image: t3ai-chat-backend:latest
+#     ports:
+#       - "3001:3001"
+#     environment:
+#       - PORT=3001
+#       - VLLM_ENDPOINT=${VLLM_ENDPOINT:-http://host.docker.internal:8080/v1/chat/completions}
+#       - VLLM_API_KEY=${VLLM_API_KEY:-token-yok}
+#       - VITE_MODEL_NAME=${VITE_MODEL_NAME:-gpt-oss-120b}
+#       - VITE_DEFAULT_TEMPERATURE=${VITE_DEFAULT_TEMPERATURE:-0.6}
+#       - VITE_DEFAULT_MAX_TOKENS=${VITE_DEFAULT_MAX_TOKENS:-4096}
+#       - MAX_OUTPUT_TOKENS_CAP=${MAX_OUTPUT_TOKENS_CAP:-4096}
+#       - MODEL_MAX_CONTEXT_LENGTH=${MODEL_MAX_CONTEXT_LENGTH:-32768}
+#       - VITE_DEFAULT_TOP_P=${VITE_DEFAULT_TOP_P:-0.95}
+#       - VITE_DEFAULT_TOP_K=${VITE_DEFAULT_TOP_K:-20}
+#       - VITE_DEFAULT_MIN_P=${VITE_DEFAULT_MIN_P:-0}
+#       - VITE_SYSTEM_PROMPT_BASE=${VITE_SYSTEM_PROMPT_BASE:-You are a helpful assistant.}
+#       # Summarization always uses GPT instance
+#       - SUMMARY_VLLM_ENDPOINT=${SUMMARY_VLLM_ENDPOINT:-http://host.docker.internal:8080/v1/chat/completions}
+#       - SUMMARY_MODEL_NAME=${SUMMARY_MODEL_NAME:-gpt-oss-120b}
+#       # Embedding (RAG) Configuration
+#       - EMBEDDING_ENDPOINT=${EMBEDDING_ENDPOINT:-http://host.docker.internal:8002/v1/embeddings}
+#       - EMBEDDING_MODEL=${EMBEDDING_MODEL:-bge-m3}
+#       - EMBEDDING_DIMENSION=${EMBEDDING_DIMENSION:-1024}
+#     restart: unless-stopped
+#     networks:
+#       - t3ai-network
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"
+#   nginx:
+#     image: nginx:alpine
+#     container_name: nginx_srv
+#     restart: unless-stopped
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     volumes:
+#       #Nginx config
+#       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#       #SSL certificates
+#       - ./ssl:/etc/nginx/ssl:ro
+#       #     networks:
+#       - t3ai-network
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"
+
+# networks:
+#   t3ai-network:
+#     driver: bridge
+#     ipam:
+#       config:
+
+
+

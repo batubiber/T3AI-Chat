@@ -1,0 +1,78 @@
+{
+  "belge_uret": {
+    "type": "function",
+    "function": {
+      "name": "belge_uret",
+      "description": "Kullanıcı yeni bir Word belgesi, Excel dosyası ya da PowerPoint sunumu istediğinde çağrılır. İstenen dosya sıfırdan yazılabilir ya da konuşmadaki veya ekli bir belgedeki bilgiden türetilebilir.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "tur": {
+            "type": "string",
+            "enum": [
+              "docx",
+              "xlsx",
+              "pptx"
+            ],
+            "description": "docx: rapor/yazı. xlsx: tablo/veri. pptx: sunum/slayt."
+          },
+          "talimat": {
+            "type": "string",
+            "description": "Kullanıcının istediği belgenin özeti"
+          },
+          "baslik": {
+            "type": "string",
+            "description": "Dosya adı için kısa Türkçe başlık, en fazla 5 kelime. Uzantı, tarih ve noktalama YAZMA. Örnek: \"Savunma Sanayii Raporu\"."
+          }
+        },
+        "required": [
+          "tur",
+          "talimat",
+          "baslik"
+        ]
+      }
+    }
+  },
+  "belge_duzenle": {
+    "type": "function",
+    "function": {
+      "name": "belge_duzenle",
+      "description": "\"rapor.docx\" adlı Word belgesinin İÇERİĞİNDE değişiklik yapmak için çağrılır: düzeltme, yeniden yazma, terim değiştirme, ekleme, çıkarma. Belge hakkında SORU sorulduğunda (özetleme, sayım, \"ne anlatıyor\") çağırma.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "talimat": {
+            "type": "string",
+            "description": "Belgede istenen değişikliğin tek cümlelik özeti"
+          }
+        },
+        "required": [
+          "talimat"
+        ]
+      }
+    }
+  },
+  "proje_hafizasi_ekle": {
+    "type": "function",
+    "function": {
+      "name": "proje_hafizasi_ekle",
+      "description": "Konuşmada, bu projenin BÜTÜN sohbetlerinde geçerli olacak KALICI bir bilgi ortaya çıktığında çağrılır. Örnekler: \"raporlar hep İngilizce hazırlanacak\", \"şirket adı belgelerde Örnek Teknoloji olarak geçecek\", \"ölçü birimi metrik\". Tek seferlik istekler, soruların cevapları ve konuşmanın kendi içeriği için ÇAĞIRMA. Emin değilsen çağırma.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "bilgi": {
+            "type": "string",
+            "description": "Hafızaya eklenecek tek cümlelik kalıcı bilgi"
+          }
+        },
+        "required": [
+          "bilgi"
+        ]
+      }
+    }
+  },
+  "ornek": {
+    "dosya": "rapor.docx",
+    "turEtiketi": "Word belgesi"
+  }
+}

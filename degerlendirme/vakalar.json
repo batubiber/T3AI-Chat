@@ -1,0 +1,283 @@
+{
+  "aciklama": "T3AI harness değerlendirme seti. Her vaka, modele TEK bir tur gönderip araç çağrısı kararını ölçüyor. Ölçüt nesnel: araç çağrıldı mı, hangisi, hangi argümanla. Hakem model yok.",
+  "sistemNotu": "Vakalar uygulamanın sistem promptunu KULLANMIYOR; ölçülen şey araç tanımlarının kendi başına yeterince yönlendirici olup olmadığı. Sistem promptu .env'de ve dağıtımdan dağıtıma değişiyor, sete gömülseydi set yanlış şeyi kilitlerdi.",
+  "vakalar": [
+    {
+      "id": "uret-word",
+      "aciklama": "Açıkça Word isteniyor",
+      "araclar": [
+        "belge_uret"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "Savunma sanayii üzerine kısa bir rapor hazırla ve Word belgesi olarak ver."
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_uret",
+        "argumanlar": {
+          "tur": "docx"
+        }
+      }
+    },
+    {
+      "id": "uret-excel",
+      "aciklama": "Tablo/veri isteği Excel'e gitmeli",
+      "araclar": [
+        "belge_uret"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "2024 yılı çeyreklik satış rakamlarını tablo hâlinde bir Excel dosyası olarak hazırla."
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_uret",
+        "argumanlar": {
+          "tur": "xlsx"
+        }
+      }
+    },
+    {
+      "id": "uret-sunum",
+      "aciklama": "Sunum isteği pptx'e gitmeli — enum'a pptx eklenip açıklamaya yazılmazsa kaçıyordu",
+      "araclar": [
+        "belge_uret"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "Şirket tanıtımı için 5 slaytlık bir sunum hazırla."
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_uret",
+        "argumanlar": {
+          "tur": "pptx"
+        }
+      }
+    },
+    {
+      "id": "uret-dolayli",
+      "aciklama": "Dolaylı istek: format adı geçmiyor, önceki turdan devam ediyor",
+      "araclar": [
+        "belge_uret"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "Kapadokya hakkında bildiklerini anlat."
+        },
+        {
+          "role": "assistant",
+          "content": "Kapadokya, İç Anadolu'da yer alan tarihi bir bölgedir. Peri bacaları ve yeraltı şehirleriyle tanınır."
+        },
+        {
+          "role": "user",
+          "content": "Bunu rapor hâline getirir misin?"
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_uret"
+      }
+    },
+    {
+      "id": "duzenle-yazim",
+      "aciklama": "Ekli belgede düzeltme isteniyor",
+      "araclar": [
+        "belge_uret",
+        "belge_duzenle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "KULLANICI DÜZENLENEBİLİR BİR BELGE EKLEDİ: \"rapor.docx\" (Word belgesi).\n\nyazım hatalarını düzelt"
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_duzenle"
+      }
+    },
+    {
+      "id": "duzenle-devam",
+      "aciklama": "Devam cümlesi — eski kapı modeli bunu kaçırıyordu",
+      "araclar": [
+        "belge_uret",
+        "belge_duzenle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "BU SOHBETTE ÜZERİNDE ÇALIŞILAN BİR BELGE VAR: \"rapor.docx\" (Word belgesi).\n\nyazım hatalarını düzelt"
+        },
+        {
+          "role": "assistant",
+          "content": "Yazım hatalarını düzelttim."
+        },
+        {
+          "role": "user",
+          "content": "başlıkları da büyük harf yap"
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_duzenle"
+      }
+    },
+    {
+      "id": "duzenle-terim",
+      "aciklama": "Terim değiştirme de düzenlemedir",
+      "araclar": [
+        "belge_uret",
+        "belge_duzenle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "KULLANICI DÜZENLENEBİLİR BİR BELGE EKLEDİ: \"teklif.docx\" (Word belgesi).\n\nbelgede geçen şirket adını Örnek A.Ş. ile değiştir"
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_duzenle"
+      }
+    },
+    {
+      "id": "soru-ne-anlatiyor",
+      "aciklama": "SORU — araç çağrılMAmalı. Yanlış tetiklenirse kullanıcı cevap yerine panel görür",
+      "araclar": [
+        "belge_uret",
+        "belge_duzenle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "KULLANICI DÜZENLENEBİLİR BİR BELGE EKLEDİ: \"rapor.docx\" (Word belgesi).\n\nbu belge ne anlatıyor?"
+        }
+      ],
+      "beklenen": {
+        "arac": null
+      }
+    },
+    {
+      "id": "soru-sayim",
+      "aciklama": "Sayım sorusu da soru",
+      "araclar": [
+        "belge_uret",
+        "belge_duzenle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "KULLANICI DÜZENLENEBİLİR BİR BELGE EKLEDİ: \"rapor.docx\" (Word belgesi).\n\nbelgede kaç bölüm var?"
+        }
+      ],
+      "beklenen": {
+        "arac": null
+      }
+    },
+    {
+      "id": "sohbet-selam",
+      "aciklama": "Sıradan sohbet — hiçbir araç çağrılmamalı",
+      "araclar": [
+        "belge_uret"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "merhaba, nasılsın?"
+        }
+      ],
+      "beklenen": {
+        "arac": null
+      }
+    },
+    {
+      "id": "sohbet-bilgi",
+      "aciklama": "Bilgi sorusu — 'anlat' fiili üretmeyi tetiklememeli",
+      "araclar": [
+        "belge_uret"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "Türkiye'nin en uzun nehri hangisidir, kısaca anlat."
+        }
+      ],
+      "beklenen": {
+        "arac": null
+      }
+    },
+    {
+      "id": "ekli-belgeden-uret",
+      "aciklama": "Belge ekli ama istenen YENİ dosya — düzenleme değil üretme. İki araç da tanıtıldığı için ayrım burada ölçülüyor",
+      "araclar": [
+        "belge_uret",
+        "belge_duzenle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "KULLANICI DÜZENLENEBİLİR BİR BELGE EKLEDİ: \"rapor.docx\" (Word belgesi).\n\nbundan ayrı bir sunum çıkar"
+        }
+      ],
+      "beklenen": {
+        "arac": "belge_uret",
+        "argumanlar": {
+          "tur": "pptx"
+        }
+      }
+    },
+    {
+      "id": "hafiza-kalici-kural",
+      "aciklama": "Projenin tüm sohbetlerinde geçerli kalıcı bir kural — hafızaya önerilmeli",
+      "araclar": [
+        "belge_uret",
+        "proje_hafizasi_ekle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "Bundan sonra bu projedeki bütün raporları İngilizce hazırla, Türkçe yazma."
+        }
+      ],
+      "beklenen": {
+        "arac": "proje_hafizasi_ekle"
+      }
+    },
+    {
+      "id": "hafiza-tek-seferlik",
+      "aciklama": "Tek seferlik istek — hafızaya YAZILMAMALI, aşırı tetiklenmenin ana riski",
+      "araclar": [
+        "belge_uret",
+        "proje_hafizasi_ekle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "Şu paragrafı İngilizceye çevirir misin: Savunma sanayii hızla büyüyor."
+        }
+      ],
+      "beklenen": {
+        "arac": null
+      }
+    },
+    {
+      "id": "hafiza-siradan-soru",
+      "aciklama": "Sıradan bilgi sorusu — hafıza önerisi çıkmamalı",
+      "araclar": [
+        "belge_uret",
+        "proje_hafizasi_ekle"
+      ],
+      "mesajlar": [
+        {
+          "role": "user",
+          "content": "İnsansız hava araçlarında kanat açıklığı neyi etkiler?"
+        }
+      ],
+      "beklenen": {
+        "arac": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+Copyright (c) 2026 Batuhan Biber. All rights reserved.
+
+This source code is made available for viewing and reference purposes only.
+
+No license is granted. You may not use, copy, modify, merge, publish,
+distribute, sublicense, sell, or create derivative works from this software,
+in whole or in part, without the prior written permission of the copyright
+holder.
+
+Third-party dependencies are licensed under their own terms (see package.json
+and each package's license file); in particular, `mupdf` is licensed under the
+GNU Affero General Public License v3.0 or later.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+---
+
+Telif Hakkı (c) 2026 Batuhan Biber. Tüm hakları saklıdır.
+
+Bu kaynak kod yalnız inceleme ve referans amacıyla yayımlanmıştır. Hiçbir
+lisans verilmemektedir; telif hakkı sahibinin önceden yazılı izni olmadan
+kullanılamaz, kopyalanamaz, değiştirilemez, dağıtılamaz ve türev çalışma
+üretilemez.
